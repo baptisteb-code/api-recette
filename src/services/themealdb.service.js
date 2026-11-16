@@ -35,3 +35,13 @@ export async function chercherRecettes () {
     }
     return donnees.meals.map(nettoyer)
 }
+
+// Une seule recette, ou null si l'id n'existe pas
+export async function chercherRecetteParId (id) {
+    const response = await fetch(BASE + '/lookup.php?i=' + id)
+    const donnees = await response.json()
+    if (!donnees.meals) {
+        return null
+    }
+    return nettoyer(donnees.meals[0])
+}
