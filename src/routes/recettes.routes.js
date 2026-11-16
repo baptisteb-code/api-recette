@@ -4,8 +4,15 @@ import { chercherRecettes, chercherRecetteParId } from '../services/themealdb.se
 const router = Router()
 
 // GET /api/recettes
+// Filtres possibles : ?categorie=Dessert  ?pays=Spain  (combinables avec &)
 router.get('/', async (req, res) => {
-    const recettes = await chercherRecettes()
+    let recettes = await chercherRecettes()
+    if (req.query.categorie) {
+        recettes = recettes.filter((r) => r.categorie === req.query.categorie)
+    }
+    if (req.query.pays) {
+        recettes = recettes.filter((r) => r.pays === req.query.pays)
+    }
     res.json(recettes)
 })
 
