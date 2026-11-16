@@ -11,4 +11,15 @@ app.get('/api', (req, res) => {
 app.use('/api/recettes', recettesRoutes)
 app.use('/api/stats', statsRoutes)
 
+// Aucune route ne correspond
+app.use((req, res) => {
+    res.status(404).json({ erreur: 'Route inconnue : ' + req.originalUrl })
+})
+
+// Quelque chose a casse
+app.use((err, req, res, next) => {
+    console.error(err)
+    res.status(500).json({ erreur: 'Erreur du serveur' })
+})
+
 export default app
