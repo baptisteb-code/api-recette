@@ -1,0 +1,22 @@
+{
+  "name": "api-recette",
+  "version": "1.0.0",
+  "description": "API de recettes en Node.js et Express, construite au-dessus de TheMealDB",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baptisteb-code/api-recette.git"
+  },
+  "keywords": [],
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/baptisteb-code/api-recette/issues"
+  },
+  "homepage": "https://github.com/baptisteb-code/api-recette#readme",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
