@@ -40,7 +40,8 @@ export async function chercherRecettes () {
 export async function chercherRecetteParId (id) {
     const response = await fetch(BASE + '/lookup.php?i=' + id)
     const donnees = await response.json()
-    if (!donnees.meals) {
+    // id inconnu : meals vaut null. id qui n'est pas un nombre : meals vaut 'Invalid ID'
+    if (!donnees.meals || donnees.meals === 'Invalid ID') {
         return null
     }
     return nettoyer(donnees.meals[0])
