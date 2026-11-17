@@ -25,9 +25,16 @@ function nettoyer (recette) {
     }
 }
 
+// Cache en memoire : on ne refait pas 26 appels a chaque visite
+// Il repart a zero quand le serveur redemarre
+let cache = null
+
 // Toutes les recettes de TheMealDB
 // TheMealDB n'a pas de route "toutes les recettes" : on les cherche lettre par lettre
 export async function chercherRecettes () {
+    if (cache) {
+        return cache
+    }
     const toutes = []
     for (const lettre of 'abcdefghijklmnopqrstuvwxyz') {
         const response = await fetch(BASE + '/search.php?f=' + lettre)
@@ -39,7 +46,8 @@ export async function chercherRecettes () {
             }
         }
     }
-    return toutes
+    cache = toutes
+    return cache
 }
 
 // Une seule recette, ou null si l'id n'existe pas
