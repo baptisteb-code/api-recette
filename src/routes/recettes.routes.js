@@ -3,8 +3,11 @@ import { chercherRecettes, chercherRecetteParId } from '../services/themealdb.se
 
 const router = Router()
 
+const PAR_PAGE = 20
+
 // GET /api/recettes
 // Filtres possibles : ?categorie=Dessert  ?pays=Spain  (combinables avec &)
+// Pagination : ?page=2
 router.get('/', async (req, res) => {
     let recettes = await chercherRecettes()
     if (req.query.categorie) {
@@ -13,7 +16,16 @@ router.get('/', async (req, res) => {
     if (req.query.pays) {
         recettes = recettes.filter((r) => r.pays === req.query.pays)
     }
-    res.json(recettes)
+
+    // On filtre d'abord, on pagine ensuite : sinon le total est faux
+    const total = recettes.length
+    const nbPages = Math.ceil(total / PAR_PAGE)
+    const page = Number(req.query.page) || 1
+    if (page < 1 || (nbPages > 0 && page > nbPages)) {
+        return res.status(404).json({ erreur: 'Cette page n existe pas' })
+    }
+    const debut = (page - 1) * PAR_PAGE
+    res.json({ page, nbPages, total, recettes: recettes.slice(debut, debut + PAR_PAGE) })
 })
 
 // GET /api/recettes/:id
