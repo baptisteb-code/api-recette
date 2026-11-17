@@ -25,15 +25,29 @@ function nettoyer (recette) {
     }
 }
 
-// Liste des recettes qui commencent par la lettre a
+// Cache en memoire : on ne refait pas 26 appels a chaque visite
+// Il repart a zero quand le serveur redemarre
+let cache = null
+
+// Toutes les recettes de TheMealDB
+// TheMealDB n'a pas de route "toutes les recettes" : on les cherche lettre par lettre
 export async function chercherRecettes () {
-    const response = await fetch(BASE + '/search.php?f=a')
-    const donnees = await response.json()
-    // meals vaut null quand TheMealDB ne trouve rien
-    if (!donnees.meals) {
-        return []
+    if (cache) {
+        return cache
     }
-    return donnees.meals.map(nettoyer)
+    const toutes = []
+    for (const lettre of 'abcdefghijklmnopqrstuvwxyz') {
+        const response = await fetch(BASE + '/search.php?f=' + lettre)
+        const donnees = await response.json()
+        // meals vaut null quand aucune recette ne commence par cette lettre
+        if (donnees.meals) {
+            for (const recette of donnees.meals) {
+                toutes.push(nettoyer(recette))
+            }
+        }
+    }
+    cache = toutes
+    return cache
 }
 
 // Une seule recette, ou null si l'id n'existe pas
