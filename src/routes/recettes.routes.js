@@ -6,7 +6,7 @@ const router = Router()
 const PAR_PAGE = 20
 
 // GET /api/recettes
-// Filtres possibles : ?categorie=Dessert  ?pays=Spain  (combinables avec &)
+// Filtres possibles : ?categorie=Dessert  ?pays=Spain  ?nom=chicken  (combinables avec &)
 // Pagination : ?page=2
 router.get('/', async (req, res) => {
     let recettes = await chercherRecettes()
@@ -15,6 +15,10 @@ router.get('/', async (req, res) => {
     }
     if (req.query.pays) {
         recettes = recettes.filter((r) => r.pays === req.query.pays)
+    }
+    // Recherche : garde les recettes dont le nom contient le texte, sans tenir compte des majuscules
+    if (req.query.nom) {
+        recettes = recettes.filter((r) => r.nom.toLowerCase().includes(req.query.nom.toLowerCase()))
     }
 
     // On filtre d'abord, on pagine ensuite : sinon le total est faux
