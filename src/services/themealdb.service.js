@@ -25,15 +25,21 @@ function nettoyer (recette) {
     }
 }
 
-// Liste des recettes qui commencent par la lettre a
+// Toutes les recettes de TheMealDB
+// TheMealDB n'a pas de route "toutes les recettes" : on les cherche lettre par lettre
 export async function chercherRecettes () {
-    const response = await fetch(BASE + '/search.php?f=a')
-    const donnees = await response.json()
-    // meals vaut null quand TheMealDB ne trouve rien
-    if (!donnees.meals) {
-        return []
+    const toutes = []
+    for (const lettre of 'abcdefghijklmnopqrstuvwxyz') {
+        const response = await fetch(BASE + '/search.php?f=' + lettre)
+        const donnees = await response.json()
+        // meals vaut null quand aucune recette ne commence par cette lettre
+        if (donnees.meals) {
+            for (const recette of donnees.meals) {
+                toutes.push(nettoyer(recette))
+            }
+        }
     }
-    return donnees.meals.map(nettoyer)
+    return toutes
 }
 
 // Une seule recette, ou null si l'id n'existe pas
