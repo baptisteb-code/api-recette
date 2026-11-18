@@ -8,7 +8,7 @@ const router = Router()
 router.get('/', async (req, res) => {
     const recettes = await chercherRecettes()
 
-    // On compte : { 'United Kingdom': 80, Spain: 48, ... }
+    // On compte : { 'United Kingdom': 59, Spain: 48, ... }
     const compteur = {}
     for (const recette of recettes) {
         if (compteur[recette.pays]) {

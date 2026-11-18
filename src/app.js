@@ -3,6 +3,7 @@ import recettesRoutes from './routes/recettes.routes.js'
 import statsRoutes from './routes/stats.routes.js'
 import categoriesRoutes from './routes/categories.routes.js'
 import paysRoutes from './routes/pays.routes.js'
+import ingredientsRoutes from './routes/ingredients.routes.js'
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use('/api/recettes', recettesRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/categories', categoriesRoutes)
 app.use('/api/pays', paysRoutes)
+app.use('/api/ingredients', ingredientsRoutes)
 
 // Aucune route ne correspond
 app.use((req, res) => {
