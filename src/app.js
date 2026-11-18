@@ -1,6 +1,7 @@
 import express from 'express'
 import recettesRoutes from './routes/recettes.routes.js'
 import statsRoutes from './routes/stats.routes.js'
+import categoriesRoutes from './routes/categories.routes.js'
 
 const app = express()
 
@@ -10,6 +11,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api/recettes', recettesRoutes)
 app.use('/api/stats', statsRoutes)
+app.use('/api/categories', categoriesRoutes)
 
 // Aucune route ne correspond
 app.use((req, res) => {
